@@ -58,7 +58,7 @@ jobs:
 
     steps:
       - name: AML Login
-        uses: .github/actions/aml_login
+        uses: ./.github/actions/aml_login
         with:
           AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
           RESOURCE_GRUOP: ${{ env.RESOURCE_GROUP }}
