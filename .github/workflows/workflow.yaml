@@ -57,6 +57,10 @@ jobs:
         password: ${{ secrets.CR_PAT }}
 
     steps:
+
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
       - name: AML Login
         uses: ./.github/actions/aml_login
         with:
