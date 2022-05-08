@@ -65,5 +65,5 @@ jobs:
         uses: ./.github/actions/aml_login
         with:
           AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
-          RESOURCE_GRUOP: ${{ env.RESOURCE_GROUP }}
+          RESOURCE_GROUP: ${{ env.RESOURCE_GROUP }}
           WORKSPACE: ${{ env.WORKSPACE }}
