@@ -52,7 +52,7 @@ jobs:
 
   build-train-pipeline:
     needs: build-and-push-docker-image
-    name: Connect to Azure
+    name: Build Train Pipeline
     runs-on: ubuntu-latest
 
     container:
@@ -73,12 +73,15 @@ jobs:
           RESOURCE_GROUP: ${{ env.RESOURCE_GROUP }}
           WORKSPACE: ${{ env.WORKSPACE }}
 
+      - name: Inspect configuration
+        run: cat $PWD/config.json
+
       - name: Build pipeline
         run: python -m ml_pipelines.build_train_pipeline
 
   run-train-pipeline:
-    needs: build-and-push-docker-image
-    name: Connect to Azure
+    needs: build-train-pipeline
+    name: Run Train Pipeline
     runs-on: ubuntu-latest
 
     container:
