@@ -1,0 +1,42 @@
+name: 'aml_log'
+description: 'Prepare Azure ML'
+
+inputs:
+  AZURE_CREDENTIALS:
+    description: "Azure Credential Object"
+    required: true
+  RESOURCE_GROUP:
+    description: "Name of ML Resource Group"
+    required: true
+  WORKSPACE:
+    description: "Name of ML workspace"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Authenticate with Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ inputs.AZURE_CREDENTIALS }}
+
+    - name: Set AZ Configs
+      run: |
+        az configure --defaults group='${{ inputs.RESOURCE_GROUP }}'
+        az configure --defaults workspace='${{ inputs.WORKSPACE }}'
+
+    - name: Produce AML Config
+      run: |
+        # We assume this SP only has one subscription
+        SUBSCRIPTION=$(az account list --query [0].id)
+        # Create a config object from our parameters using jq
+        JSON_STRING=$(jq -n \
+            --arg sub $SUBSCRIPTION \
+            --arg rg ${{ inputs.RESOURCE_GROUP }} \
+            --arg ws ${{ inputs.WORKSPACE }} \
+            '{subscription_id: $sub, resource_group: $rg, workspace_name: $ws}')
+        # Write the json string to the current repo
+        echo -e $JSON_STRING >> $PWD/config.json
