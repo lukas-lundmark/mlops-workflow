@@ -1,0 +1,39 @@
+name: Automatic Training
+on:
+  push:
+    branches: [main]
+
+env:
+  IMAGE_NAME: mlops-ci-image
+
+jobs:
+  build-and-push-docker-image:
+    name: Build Docker image and push to repositories
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Login to Github Packages
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.CR_PAT }}
+
+      - name: filter
+        uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            workflows:
+              - 'environment_setup/**'
+
+      - name: Build and Push
+        if: steps.filter.outputs.workflows == 'true'
+        uses: docker/build-push-action@v2
+        with:
+          context: ./environment_setup/
+          tags: |
+              "ghcr.io/${{ github.actor }}/${{ env.IMAGE_NAME }}:latest"
+              "ghcr.io/${{ github.actor }}/${{ env.IMAGE_NAME }}:${{github.sha}}"

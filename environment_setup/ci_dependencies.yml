@@ -1,0 +1,34 @@
+name: mlopspython_ci
+
+channels:
+  - conda-forge
+
+dependencies:
+  # Select the python interpreter version
+  - python=3.8.13
+
+  # Standard libraries for data science
+  - numpy=1.22.*
+  - pandas=1.4.*
+  - scikit-learn=1.0.*
+  - notebook==6.4.*
+
+  # Additional dependencies for the CI environment.
+  - pytest==7.0.*
+  - pytest-cov=3.0.*
+  - requests==2.27.*
+  - python-dotenv==0.20.*
+  - black==22.3.*
+
+  # We need pip to install pip packages
+  - pip==22.0.*
+
+  # Install jq for convenience
+  - jq==1.6
+
+  - pip:
+      # dependencies with versions aligned with conda_dependencies.yml.
+      - azureml-sdk==1.40.*
+      - azureml-dataset-runtime[fuse,pandas]==1.40.*
+      # - azureml-core==1.40.*
+      - azure-cli==2.34.*
