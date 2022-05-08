@@ -35,5 +35,5 @@ jobs:
         with:
           context: ./environment_setup/
           tags: |
-              "ghcr.io/${{ github.actor }}/${{ env.IMAGE_NAME }}:latest"
-              "ghcr.io/${{ github.actor }}/${{ env.IMAGE_NAME }}:${{github.sha}}"
+              "ghcr.io/lukas-lundmark/mlops-ci-image:latest"
+              "ghcr.io/lukas-lundmark/mlops-ci-image:${{github.sha}}"
