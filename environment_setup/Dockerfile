@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install git wget bzip2 -y && \
     | tar -xvj bin/micromamba --strip-components=1 && \
     cp micromamba /usr/bin/
 
+
 # Copy the dependency definition to the docker image
 COPY ci_dependencies.yml /setup/
 
