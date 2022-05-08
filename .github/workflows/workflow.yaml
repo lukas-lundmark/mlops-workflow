@@ -51,7 +51,7 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: ghcr.io/${{ github.actor }}/${{ env.IMAGE_NAME }}:latest
+      image: ghcr.io/lukas-lundmark/mlops-ci-image:latest
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.CR_PAT }}
