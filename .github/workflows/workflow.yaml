@@ -34,6 +34,9 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./environment_setup/
-          tags: |
-              "ghcr.io/lukas-lundmark/mlops-ci-image:latest"
-              "ghcr.io/lukas-lundmark/mlops-ci-image:${{github.sha}}"
+          tags: ghcr.io/lukas-lundmark/${{ env.IMAGE_NAME }}:latest
+
+          push: ${{ github.ref == 'refs/heads/main' }}
+
+      - name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
