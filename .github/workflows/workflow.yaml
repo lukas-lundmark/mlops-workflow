@@ -51,7 +51,7 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: ghcr.io/${{gitub.actor}}/${{env.IMAGE_NAME}}:latest
+      image: ghcr.io/${{ github.actor }}/${{ env.IMAGE_NAME }}:latest
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.CR_PAT }}
@@ -69,7 +69,7 @@ jobs:
         run: |
           az configure -–defaults \
               group=${{ inputs.RESOURCE_GROUP }} \
-              workspace={{ env.WORKSPACE}}
+              workspace=${{ env.WORKSPACE}}
 
       - name: Produce AML Config
         run: |
