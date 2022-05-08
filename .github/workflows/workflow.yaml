@@ -5,6 +5,8 @@ on:
 
 env:
   IMAGE_NAME: mlops-ci-image
+  RESOURCE_GROUP: mlops-rg
+  WORKSPACE: azure-ml-toyota-demo
 
 jobs:
   build-and-push-docker-image:
@@ -42,3 +44,42 @@ jobs:
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
+
+  connect-to-azure:
+    needs: build-and-push-docker-image
+    name: Connect to Azure
+    runs-on: ubuntu-latest
+
+    container:
+      image: ghcr.io/${{gitub.actor}}/${{env.IMAGE_NAME}}:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.CR_PAT }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Authenticate with Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Set AZ Configs
+        runs: |
+          az configure -–defaults \
+              group=${{ inputs.RESOURCE_GROUP }} \
+              workspace={{ env.WORKSPACE}}
+
+      - name: Produce AML Config
+        runs: |
+          # We assume this SP only has one subscription
+          SUBSCRIPTION=$(az account list --query [0].id)
+          # Create a config object from our parameters using jq
+          JSON_STRING=$(jq -n
+              --arg sub $SUBSCRIPTION \
+              --arg rg ${{ env.RESOURCE_GROUP }} \
+              --arg ws ${{ env.WORKSPACE }} \
+              '{subscription_id: $sub, resource_group: $rg, workspace_name: $ws}')
+          # Write the json string to the current repo
+          echo -e $JSON_STRING >> $PWD/config.json
