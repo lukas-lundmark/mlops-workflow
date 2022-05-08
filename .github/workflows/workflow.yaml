@@ -68,7 +68,7 @@ jobs:
       - name: Set AZ Configs
         run: |
           az configure -–defaults \
-              group=${{ inputs.RESOURCE_GROUP }} \
+              group=${{ env.RESOURCE_GROUP }} \
               workspace=${{ env.WORKSPACE}}
 
       - name: Produce AML Config
