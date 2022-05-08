@@ -66,13 +66,13 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Set AZ Configs
-        runs: |
+        run: |
           az configure -–defaults \
               group=${{ inputs.RESOURCE_GROUP }} \
               workspace={{ env.WORKSPACE}}
 
       - name: Produce AML Config
-        runs: |
+        run: |
           # We assume this SP only has one subscription
           SUBSCRIPTION=$(az account list --query [0].id)
           # Create a config object from our parameters using jq
