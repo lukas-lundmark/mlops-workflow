@@ -30,7 +30,7 @@ runs:
       shell: bash
       run: |
         # We assume this SP only has one subscription
-        SUBSCRIPTION=$(az account list --query '[0].id')
+        SUBSCRIPTION=$(az account list --query '[0].id' --output tsv)
         # Create a config object from our parameters using jq
         JSON_STRING=$(jq -n \
             --arg sub $SUBSCRIPTION \
