@@ -35,8 +35,8 @@ jobs:
         with:
           context: ./environment_setup/
           tags: |
-            ghcr.io/lukas-lundmark/${{ env.IMAGE_NAME }}:latest
-            ghcr.io/lukas-lundmark/${{ env.IMAGE_NAME }}:${{ github.sha }}
+            ghcr.io/${{ github.actor }}/${{ env.IMAGE_NAME }}:latest
+            ghcr.io/${{ github.actor }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
 
           push: ${{ github.ref == 'refs/heads/main' }}
 
