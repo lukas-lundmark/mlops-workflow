@@ -75,7 +75,7 @@ jobs:
           # We assume this SP only has one subscription
           SUBSCRIPTION=$(az account list --query [0].id)
           # Create a config object from our parameters using jq
-          JSON_STRING=$(jq -n
+          JSON_STRING=$(jq -n \
               --arg sub $SUBSCRIPTION \
               --arg rg ${{ env.RESOURCE_GROUP }} \
               --arg ws ${{ env.WORKSPACE }} \
